@@ -1,0 +1,13 @@
+in memory db - why - non persistent
+
+caching data
+
+talk about indexes
+
+key value store
+
+server goes to redis - asks the redis for the query response - don't even have to talk to the db
+
+implementing using a real example
+
+key value pair - in memory store - ram

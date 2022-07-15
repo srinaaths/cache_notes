@@ -1,0 +1,57 @@
+caching - for blazing fast responses
+
+CPU to browser to any app - sub millisecond response - needed
+
+which business case in ur system require high throughput, fast response or low latency
+
+data inconsistency
+
+what kind of data
+
+does cache need to maintain the data
+
+in process cache or shared cache 
+
+open-source ,distributed cache
+
+benefits: decreased network costs, improved responsiveness, inc perf, content availability during network interruptions
+
+example - dp or hashmaps - works as caching
+
+rdbms use caching as well but external caching is more efficient
+
+session store, manage spike, rdbms speedup, token cache, gaming scoreboards
+
+data access strategies matter - depending on the pattern of the data
+
+read through/lazy loading - read the cache first, if not present, retrieve from the data source and then put it into the cache
+
+cons: for cache miss, there are 3 network round trips, stale data
+
+write through: while inserting/ updating the data in the db, upsert the data in the cache as well. both should occur in a single transaction otherwise data staleness will be there
+pros: no stale data
+cons: write penalty system, cache churn, cache node goes missing
+
+write behind cache: first data is written to the cache, then asynchrously writes it the the underlying data source - queue of write operations is maintained in the cache
+pros: no wait time till written to db, insulated from db failure, high 
+cons: fetching data from db might be a problem, time taken to update data to the underlying db
+
+refresh ahead caching: cached data refreshed before it's getting expired
+
+eviction policy - to ensure that the cache does not exceed the maximum size limit - can be customized
+
+lru - google search for a particular item
+such cases, cached data which is not used very recently can be safely evicted
+
+cons: mild success rate focus should be on how many times data is accessed rather than when it accessed
+
+lfu - mobile keyboard - for repetitive data
+
+mru - most recently used - tinder example
+
+object store, key value store, data structure cache, static file cache, in memory cache - mysql, 
+
+from stackoverflow user:
+' the best approach is to decide which data should be cached and which should not, what layers and architecture of caching should be used, etc. For example, you may not want to cache any data that is very dynamic. For instance, user carts, balance, view count, etc. As these data are always changing, caching them usually results in (close to) doubling the resource intake rather than increasing the actual throughput in practical scenarios. If a set of data is rarely fetched, it may not need caching at all.
+
+On the other hand, if some part of your data has a very high hit ratio, for instance, home page elements, top posts, best-selling products, etc. then those should be cached using a fast and high availability caching mechanism such as object stores. In this way, high demand can be met in case of thousands of concurrent hits for those data without impacting the disk IO or database performance.'
